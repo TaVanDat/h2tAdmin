@@ -24,7 +24,7 @@ function App() {
         <Route path="/sign-in" exact component={SignIn} />
         <Main>
           <Route exact path="/dashboard" component={Home} />
-          <Route exact path="/san pham" component={Tables} />
+          <Route exact path="/Sản phẩm" component={Tables} />
           <Route exact path="/user" component={Users} />
           <Route exact path="/category" component={Category} />
           <Route exact path="/news" component={News} />

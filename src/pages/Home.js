@@ -176,12 +176,15 @@ function Home() {
     {
       title: "Name",
       key: "Name",
-      width: 220,
+      width: 200,
       fixed: 'left',
+      ellipsis: {
+        showTitle: false,
+      },
       render(record) {
         return (
           <>
-            <img src={url + record.Image[0]} alt='not' width={30} height={35} title={record.Name} />&emsp;{record.Name.substr(0, 20)}...
+            <img src={url + record.Image[0]} alt='not' width={30} height={35} title={record.Name} />&emsp;{record.Name}
           </>
         );
       }
@@ -189,14 +192,18 @@ function Home() {
     {
       title: "Description",
       key: "Description",
+      dataIndex: 'Description',
       width: 400,
-      render(record) {
-        return (
-          <>
-            {record.Description.substr(0, 70)}...
-          </>
-        );
-      }
+      ellipsis: {
+        showTitle: false,
+      },
+      // render(record) {
+      //   return (
+      //     <>
+      //       {record.Description.substr(0, 70)}...
+      //     </>
+      //   );
+      // }
     },
     {
       title: "Price",

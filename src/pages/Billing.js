@@ -4,35 +4,18 @@ import React, { useState, useEffect } from 'react'
 
 import './style.css'
 import {
-  Row, Col, Card, Radio, Table, Button, Avatar,
-  Typography, Pagination, Modal, Input, Select, notification, Spin,
+  Row, Col, Card, Table, Button, Drawer,
+  Modal, notification, Spin,
 } from "antd";
-import { DeleteOutlined, EditOutlined, PlusSquareOutlined } from '@ant-design/icons';
-// import { ToTopOutlined } from "@ant-design/icons";
+import { EditOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useHistory } from "react-router-dom";
 import { API_URL } from '../api/API_URL'
 import axios from 'axios';
 import useStateRef from 'react-usestateref';
 import moment from 'moment'
 import { Format } from '../services/Format'
-// Images
-// import ava1 from "../assets/images/logo-shopify.svg";
-// import ava2 from "../assets/images/logo-atlassian.svg";
-// import ava3 from "../assets/images/logo-slack.svg";
-// import ava5 from "../assets/images/logo-jira.svg";
-// import ava6 from "../assets/images/logo-invision.svg";
-import face from "../assets/images/face-1.jpg";
-import face2 from "../assets/images/face-2.jpg";
-import face3 from "../assets/images/face-3.jpg";
-import face4 from "../assets/images/face-4.jpg";
-import face5 from "../assets/images/face-5.jpeg";
-import face6 from "../assets/images/face-6.jpeg";
-// import pencil from "../assets/images/pencil.svg";
 
-const { Title } = Typography;
-const { Option } = Select
 
-// table code start
 
 
 
@@ -49,10 +32,7 @@ function Billing() {
   const [isAddNew, setIsAddNew] = useState({})
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [disabled, setDisabled] = useState(true)
   const [categoryName, setCategoryName] = useState("")
-  const [code, setCode] = useState("")
-  const [statusId, setStatusId] = useState(1)
   const fetchData = async () => {
     const response = await axios.get(`${API_URL}/bill/all`)
     if (response && response.data) {
@@ -65,12 +45,7 @@ function Billing() {
   const handleChangeCategoryName = (e) => {
     setCategoryName(e.target.value);
   }
-  useEffect(() => {
-    if (categoryName && isAddNew.Code && isAddNew.StatusId) {
-      setDisabled(false)
-    }
-    else setDisabled(true)
-  }, [categoryName, isAddNew])
+
   useEffect(() => {
     fetchData()
   }, [success, isLoading])
@@ -81,6 +56,13 @@ function Billing() {
       dataIndex: "Code",
       key: "Code",
       width: 10,
+      // render(record) {
+      //   return (
+      //     <div>
+      //       <Link to={`/bill/detail/${record.Id}`} style={{ color: '#000' }}>{record.Code}</Link>
+      //     </div>
+      //   );
+      // }
       // sorter: (a, b) => a.Id.length - b.Id.length,
 
       // fixed: 'left'
@@ -119,11 +101,38 @@ function Billing() {
       }
     },
     {
+      title: "Status",
+      key: "StatusId",
+      width: 100,
+      // dataIndex: "StatusId",
+      render(record) {
+        return (
+          <div>
+            {Number(record.StatusId) === 3 ? 'Đang chờ' : (Number(record.StatusId) === 4 ? 'Đã duyệt' : 'Đã hủy')}
+          </div>
+        );
+      }
+
+    },
+    {
       title: "TransformMethod",
       key: "TransformMethod",
       width: 100,
       dataIndex: "TransformMethod",
 
+    },
+    {
+      title: "Action",
+      key: "Action",
+      width: 100,
+      render() {
+        return (
+          <div>
+            <FileTextOutlined style={{ color: '#000', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
+            <EditOutlined style={{ color: 'aqua', cursor: 'pointer', fontSize: 20 }} />
+          </div>
+        );
+      },
     },
   ];
 

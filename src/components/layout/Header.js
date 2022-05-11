@@ -426,11 +426,11 @@ function Header({
             {profile}
             <span>{auth ? 'Sign out' : 'Sign in'}</span>
           </span>
-          <Input
+          {/* <Input
             className="header-search"
             placeholder="Type here..."
             prefix={<SearchOutlined />}
-          />
+          /> */}
         </Col>
       </Row>
     </>

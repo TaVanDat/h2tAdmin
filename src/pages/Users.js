@@ -37,6 +37,7 @@ const { Option } = Select
 function Users() {
     const history = useHistory()
     const auth = localStorage.getItem('token_admin') ? true : false
+
     useEffect(() => {
         !auth && history.replace('/sign-in')
     }, [])
@@ -82,6 +83,9 @@ function Users() {
             key: "Address",
             dataIndex: "Address",
             width: 300,
+            ellipsis: {
+                showTitle: false,
+            },
         },
         {
             title: "PHONE",
@@ -110,7 +114,7 @@ function Users() {
             render(record) {
                 return (
                     <div>
-                        {Number(record.Role) === 0 ? 'Quản trị viên' : 'Khách hàng'}
+                        {Number(record.Role) === 0 ? 'Quản trị viên' : (Number(record.Role) === 2 ? 'Nhân viên' : 'Khách hàng')}
                     </div>
                 );
             }
@@ -175,12 +179,7 @@ function Users() {
                             className="criclebox tablespace mb-24"
                             title="Authors Table"
                             extra={
-                                <>
-                                    <Radio.Group onChange={onChange} defaultValue="a">
-                                        <Radio.Button value="a">All</Radio.Button>
-                                        <Radio.Button value="b">ONLINE</Radio.Button>
-                                    </Radio.Group>
-                                </>
+                                <></>
                             }
                         >
                             <div className="table-responsive" >
@@ -232,6 +231,7 @@ function Users() {
                                     >
                                         <Option value="0">Quản trị viên</Option>
                                         <Option value="1">Khách hàng</Option>
+                                        <Option value="2">Nhân viên</Option>
 
                                     </Select>
                                 </Modal>

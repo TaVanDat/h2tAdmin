@@ -47,7 +47,7 @@ const SignIn = () => {
 
     await callApiHeaders('POST', 'authentication/login', { Email: values.email, Password: values.password })
       .then((res) => {
-        if (Number(res.data.data.data[0].Role) === 0) {
+        if (Number(res.data.data.data[0].Role) === 0 || Number(res.data.data.data[0].Role) === 2) {
           notification.success({
             message: 'Login Success!',
             description: '',
@@ -55,6 +55,7 @@ const SignIn = () => {
           })
           localStorage.setItem('token_admin', res.data.data.token)
           localStorage.setItem('user_name', res.data.data.data[0].Name)
+          localStorage.setItem('role', res.data.data.data[0].Role)
           history.push('/')
         }
         else {

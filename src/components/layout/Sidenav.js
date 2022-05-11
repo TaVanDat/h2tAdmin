@@ -15,6 +15,7 @@ function Sidenav({ color }) {
   // const history = useHistory();
   const page = pathname.replace("/", "");
   const UserName = localStorage.getItem('user_name')
+  const role = Number(localStorage.getItem('role'));
 
   const dashboard = [
     <svg
@@ -116,11 +117,11 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
-          <NavLink to="/san pham">
+          <NavLink to="/Sản phẩm">
             <span
               className="icon"
               style={{
-                background: page === "san pham" ? color : "",
+                background: page === "Sản phẩm" ? color : "",
               }}
             >
               <SkinOutlined />
@@ -167,23 +168,25 @@ function Sidenav({ color }) {
             <span className="label">Manager News</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="8">
-          <NavLink to="/user">
-            <span
-              className="icon"
-              style={{
-                background: page === "user" ? color : "",
-              }}
-            >
-              <SolutionOutlined />
-            </span>
-            <span className="label">Manager Users</span>
-          </NavLink>
-        </Menu.Item>
+        {role === 0 &&
+          <Menu.Item key="8">
+            <NavLink to="/user">
+              <span
+                className="icon"
+                style={{
+                  background: page === "user" ? color : "",
+                }}
+              >
+                <SolutionOutlined />
+              </span>
+              <span className="label">Manager Users</span>
+            </NavLink>
+          </Menu.Item>
+        }
         <Menu.Item className="menu-item-header" key="9">
           Account Pages
         </Menu.Item>
-        <Menu.Item key="10">
+        {/* <Menu.Item key="10">
           <NavLink to="/profile">
             <span
               className="icon"
@@ -195,7 +198,7 @@ function Sidenav({ color }) {
             </span>
             <span className="label">Profile</span>
           </NavLink>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="11">
           <NavLink to="/sign-in" onClick={SignOut}>
             <span className="icon"><SplitCellsOutlined /></span>
@@ -203,7 +206,7 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
       </Menu>
-      <div className="aside-footer">
+      {/* <div className="aside-footer">
         <div
           className="footer-box"
           style={{
@@ -219,7 +222,7 @@ function Sidenav({ color }) {
             DOCUMENTATION
           </Button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

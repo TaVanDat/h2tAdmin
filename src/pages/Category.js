@@ -417,41 +417,6 @@ function Category() {
                             </div>
                         </Card>
                     </Col>
-                    <form onSubmit={handleSubmitFile}>
-                        <input type="file" name="upload" id="image_upload"
-                            value={fileInputState}
-                            onChange={(e) => handleFileUpload(e)}
-                        />
-                        <button type="submit">click</button>
-                        {/* <button type='button' onClick={uploadCloud}>upload</button> */}
-                    </form>
-                    {/* <img src='https://res.cloudinary.com/dbfjceflf/image/upload/v1652124177/samples/sfbw5jsyswafloj39owt.jpg' alt="not" width={200} /> */}
-                    {fileName && (
-                        <img src={'https://res.cloudinary.com/dbfjceflf/image/upload/v1652124177/samples/' + fileName[0]} alt="not" width={200} />
-
-                    )}
-                    <Upload
-                        accept='.png,.jpg'
-                        status='done'
-                        action={`${API_URL}/upload/cloudinary`}
-                        showUploadList={{ showRemoveIcon: false }}
-                        name='img'
-                        maxCount={1}
-                        onChange={(res) => {
-                            if (res.file.status === 'done') {
-                                console.log(res.file.response?.fileName)
-                                setFileName(pre => {
-                                    return [
-                                        ...pre, res.file.response?.fileName
-                                    ]
-                                }
-                                )
-                            }
-                        }}
-                    // customRequest={{ status: 'done' }}
-                    >
-                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                    </Upload>
                 </Row>
             </div>
         </>

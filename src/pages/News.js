@@ -4,15 +4,17 @@ import React, { useState, useEffect } from 'react'
 
 import './style.css'
 import {
-    Row, Col, Card, Radio, Table, Button, Avatar, Form,
-    Typography, Pagination, Modal, Input, Select, notification, Spin, Drawer,
+    Row, Col, Card, Radio, Table, Button, Avatar, Form, Upload,
+    Typography, Pagination, Modal, Input, Select, notification, Spin, Drawer, Popconfirm,
 } from "antd";
-import { DeleteOutlined, EditOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusSquareOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { useHistory } from "react-router-dom";
 import { API_URL } from '../api/API_URL'
 import axios from 'axios';
 import useStateRef from 'react-usestateref';
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import moment from 'moment'
 // Images
 const { TextArea } = Input;
@@ -65,7 +67,7 @@ function News() {
     const [success, setSuccess] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [addNews, setAddNews] = useState(false)
-
+    const [isDataAdd, setIsDataAdd] = useState({})
     const fetchData = async () => {
         const response = await axios.get(`${API_URL}/news/list`)
         if (response && response.data) {
@@ -86,12 +88,15 @@ function News() {
             title: "Name",
             // dataIndex: "Name",
             key: "Name",
-            width: 30,
+            width: 100,
             sorter: (a, b) => a.Name.length - b.Name.length,
+            ellipsis: {
+                showTitle: false,
+            },
             render(record) {
                 return (
                     <>
-                        <img src={url + record.Image} alt="not" title={record.Name} width={50} height={30} style={{ marginRight: 10 }} />{record.Name.substr(0, 30)}...
+                        <img src={url + record.Image} alt="not" title={record.Name} width={50} height={30} style={{ marginRight: 10 }} />{record.Name}
                     </>
                 );
             }
@@ -99,30 +104,36 @@ function News() {
         },
         {
             title: "Content",
-            // dataIndex: "Content",
+            dataIndex: "Content",
             key: "Content",
-            width: 30,
-            render(record) {
-                return (
-                    <>
-                        {record.Name.substr(0, 30)}...
-                    </>
-                );
-            }
+            width: 100,
+            ellipsis: {
+                showTitle: false,
+            },
+            // render(record) {
+            //     return (
+            //         <>
+            //             {record.Name.substr(0, 30)}...
+            //         </>
+            //     );
+            // }
 
         },
         {
             title: "Title",
             key: "Title",
-            width: 50,
-            // dataIndex: "Title",
-            render(record) {
-                return (
-                    <>
-                        {record.Title.substr(0, 25)}...
-                    </>
-                );
-            }
+            width: 100,
+            dataIndex: "Title",
+            ellipsis: {
+                showTitle: false,
+            },
+            // render(record) {
+            //     return (
+            //         <>
+            //             {record.Title.substr(0, 25)}...
+            //         </>
+            //     );
+            // }
         },
         {
             title: "Action",
@@ -134,7 +145,9 @@ function News() {
                     <>
                         {/* <PlusSquareOutlined onClick={() => BtnAddNew(record)} style={{ color: 'green', cursor: 'pointer', marginRight: 10, fontSize: 20 }} /> */}
                         <EditOutlined onClick={() => BtnModalUpdate(record)} style={{ color: 'aqua', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
-                        <DeleteOutlined onClick={() => BtnDelete(record)} style={{ color: 'red', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
+                        <Popconfirm title="Sure to delete?" onConfirm={() => BtnDelete(record)}>
+                            <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
+                        </Popconfirm>
                     </>
                 );
             }
@@ -143,7 +156,7 @@ function News() {
 
     const BtnModalUpdate = (record) => {
         setIsEditing(true)
-        setIsDataEdit({ ...record })
+        setIsDataEdit({ ...record, Image: '' })
 
     }
 
@@ -166,11 +179,16 @@ function News() {
             })
     }
     const UpdateUser = async () => {
-        await axios.put(`${API_URL}/news/update/${isDataEdit.Id}`, { ...isDataEdit, Image: 'empty.png' }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        await axios.put(`${API_URL}/news/update/${isDataEdit.Id}`,
+            {
+                ...isDataEdit,
+                Image: isDataEdit.Image ? isDataEdit.Image : 'empty.png',
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
             .then(() => {
                 notification.success({
                     message: 'Update Success',
@@ -180,6 +198,7 @@ function News() {
                 setIsLoading(false)
                 setSuccess(true)
                 setAddNews(false)
+                setIsEditing(false)
             })
             .catch(err => {
                 notification.error({
@@ -198,7 +217,8 @@ function News() {
     const AddNews = async (values) => {
         const valueUpdate = {
             ...values,
-            Image: 'empty.png'
+            Image: isDataAdd.Image ? isDataAdd.Image : 'empty.png',
+            Content: isDataAdd.Content
         }
         axios.post(`${API_URL}/news/add`, valueUpdate, {
             headers: {
@@ -280,18 +300,45 @@ function News() {
                                             >
                                                 <Input />
                                             </Form.Item>
-                                            <Form.Item
-                                                name="Content"
-                                                label="Content"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: 'Please input Content',
-                                                    },
-                                                ]}
+                                            <Upload
+                                                accept='.png,.jpg'
+                                                status='done'
+                                                action={`${API_URL}/upload/cloudinary`}
+                                                showUploadList={{ showRemoveIcon: false }}
+                                                name='img'
+                                                maxCount={1}
+                                                onChange={(res) => {
+                                                    if (res.file.status === 'done') {
+                                                        // console.log(res.file.response?.fileName)
+
+                                                        setIsDataAdd(pre => {
+                                                            return {
+                                                                ...pre, Image: res.file.response?.fileName
+                                                            }
+                                                        })
+                                                    }
+                                                }}
+                                            // customRequest={{ status: 'done' }}
                                             >
-                                                <Input.TextArea showCount rows={15} />
-                                            </Form.Item>
+                                                <Button icon={<UploadOutlined />}>Thêm ảnh (Số lượng:1)</Button>
+                                            </Upload><br />
+                                            <p> Content:
+                                                <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data={isDataEdit.Content}
+
+                                                    onChange={(event, editor) => {
+                                                        const data = editor.getData();
+                                                        setIsDataAdd(pre => {
+                                                            return {
+                                                                ...pre, Content: data
+                                                            }
+                                                        })
+                                                    }}
+
+                                                />
+
+                                            </p><br />
 
                                             <Form.Item {...tailFormItemLayout}>
                                                 <Button type="primary" htmlType="submit">
@@ -348,20 +395,46 @@ function News() {
                                                 })
                                             } />
                                     </label><br /><br />
-                                    <label> Content:
-                                        <TextArea rows={15}
-                                            placeholder='Fill in Content'
-                                            value={isDataEdit.Content}
-                                            onChange={e =>
+                                    <Upload
+                                        accept='.png,.jpg'
+                                        status='done'
+                                        action={`${API_URL}/upload/cloudinary`}
+                                        showUploadList={{ showRemoveIcon: false }}
+                                        name='img'
+                                        maxCount={5}
+                                        onChange={(res) => {
+                                            if (res.file.status === 'done') {
+                                                // console.log(res.file.response?.fileName)
+
                                                 setIsDataEdit(pre => {
                                                     return {
-                                                        ...pre, Content: e.target.value
+                                                        ...pre, Image: res.file.response?.fileName
                                                     }
                                                 })
                                             }
+                                        }}
+                                    // customRequest={{ status: 'done' }}
+                                    >
+                                        <Button icon={<UploadOutlined />}>Thêm ảnh (Số lượng:1)</Button>
+                                    </Upload><br />
+                                    <p> Content:
+                                        <CKEditor
+                                            editor={ClassicEditor}
+                                            data={isDataEdit.Content}
+
+                                            onChange={(event, editor) => {
+                                                const data = editor.getData();
+                                                setIsDataEdit(pre => {
+                                                    return {
+                                                        ...pre, Content: data
+                                                    }
+                                                })
+                                            }}
+
                                         />
 
-                                    </label><br /> <br />
+                                    </p><br />
+
                                     <div style={{ textAlign: 'center' }}>
                                         <Button type='primary' onClick={UpdateUser}>Save</Button>
                                     </div>

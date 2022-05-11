@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import './style.css'
 import {
   Row, Col, Card, Button, Table, Avatar, Form, InputNumber, Upload,
-  Typography, Pagination, Modal, Input, Select, notification, Spin, Drawer,
+  Typography, Pagination, Modal, Input, Select, notification, Spin, Drawer, Popconfirm,
 } from "antd";
 import { DeleteOutlined, EditOutlined, PlusSquareOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -120,12 +120,15 @@ function News() {
       width: 220,
       fixed: 'left',
       sorter: (a, b) => a.Name.length - b.Name.length,
+      ellipsis: {
+        showTitle: false,
+      },
       render(record) {
         return (
           <>
             {record.Image ?
-              (<><img src={url + record.Image[0]} alt='not' width={30} height={35} title={record.Name} />&emsp;{record.Name.substr(0, 20)}...</>)
-              : (<><img src={url + 'empty.png'} alt='not' width={30} height={35} title={record.Name} />&emsp;{record.Name.substr(0, 20)}...</>)
+              (<><img src={url + record.Image[0]} alt='not' width={30} height={35} title={record.Name} />&emsp;{record.Name}</>)
+              : (<><img src={url + 'empty.png'} alt='not' width={30} height={35} title={record.Name} />&emsp;{record.Name}</>)
             }
           </>
         );
@@ -134,14 +137,18 @@ function News() {
     {
       title: "Description",
       key: "Description",
+      dataIndex: 'Description',
       width: 400,
-      render(record) {
-        return (
-          <>
-            {record.Description.substr(0, 50)}...
-          </>
-        );
-      }
+      ellipsis: {
+        showTitle: false,
+      },
+      // render(record) {
+      //   return (
+      //     <>
+      //       {record.Description.substr(0, 50)}...
+      //     </>
+      //   );
+      // }
     },
     {
       title: "Price",
@@ -240,7 +247,9 @@ function News() {
           <>
             {/* <PlusSquareOutlined onClick={() => BtnAddNew(record)} style={{ color: 'green', cursor: 'pointer', marginRight: 10, fontSize: 20 }} /> */}
             <EditOutlined onClick={() => BtnModalUpdate(record)} style={{ color: 'aqua', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
-            <DeleteOutlined onClick={() => BtnDelete(record)} style={{ color: 'red', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
+            <Popconfirm title="Sure to delete?" onConfirm={() => BtnDelete(record)}>
+              <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
+            </Popconfirm>
           </>
         );
       }
@@ -254,30 +263,30 @@ function News() {
 
   }
 
-  const BtnDelete = (record) => {
-    Modal.confirm({
-      title: "You sure delete?",
-      onText: "Yes",
-      okType: 'danger',
-      onOk: async () => {
-        await axios.delete(`${API_URL}/product/delete/${record.Id}`)
-          .then(() => {
-            notification.success({
-              message: 'Delete Success!',
-              description: '',
-              className: "delete-success"
-            })
-            setSuccess(state => !state)
-          })
-          .catch(err => {
-            notification.success({
-              message: 'Delete Failed:  ' + err,
-              description: '',
-              className: "delete-error"
-            })
-          })
-      }
-    })
+  const BtnDelete = async (record) => {
+    // Modal.confirm({
+    //   title: "You sure delete?",
+    //   onText: "Yes",
+    //   okType: 'danger',
+    //   onOk: async () => {
+    await axios.delete(`${API_URL}/product/delete/${record.Id}`)
+      .then(() => {
+        notification.success({
+          message: 'Delete Success!',
+          description: '',
+          className: "delete-success"
+        })
+        setSuccess(state => !state)
+      })
+      .catch(err => {
+        notification.success({
+          message: 'Delete Failed:  ' + err,
+          description: '',
+          className: "delete-error"
+        })
+      })
+    // }
+    // })
 
 
   }
@@ -592,27 +601,12 @@ function News() {
                               }}
                             // customRequest={{ status: 'done' }}
                             >
-                              <Button icon={<UploadOutlined />}>Thêm ảnh (Số lượng:1)</Button>
+                              <Button icon={<UploadOutlined />}>Upload (Max:1)</Button>
                             </Upload>
                             {/* <Button type='primary'>Upload</Button> */}
                           </Card>
                         </Col>
                       </Row>
-
-
-
-                      {/* <Form.Item
-                        name="Description"
-                        label="Description"
-                        rules={[
-                          {
-                            required: true,
-                            message: 'Please input Description',
-                          },
-                        ]}
-                      >
-                        <Input.TextArea showCount rows={20} />
-                      </Form.Item> */}
 
                       <p> Description:
                         <CKEditor
@@ -860,7 +854,7 @@ function News() {
                           }}
                         // customRequest={{ status: 'done' }}
                         >
-                          <Button icon={<UploadOutlined />}>Thêm ảnh (Số lượng&lt;=5)</Button>
+                          <Button icon={<UploadOutlined />}>Upload (Max&lt;=5)</Button>
                         </Upload>
                         {/* <Button type='primary'>Upload</Button> */}
                       </Card>
