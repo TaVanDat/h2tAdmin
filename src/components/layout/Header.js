@@ -278,7 +278,7 @@ function Header({
         <Col span={24} md={6}>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/">Trang chủ</NavLink>
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
               {name.replace("/", "")}
@@ -326,13 +326,13 @@ function Header({
             <div layout="vertical">
               <div className="header-top">
                 <Title level={4}>
-                  Configurator
-                  <Text className="subtitle">See our dashboard options.</Text>
+                  Trình cấu hình
+                  <Text className="subtitle">Xem các tùy chọn bảng điều khiển của chúng tôi</Text>
                 </Title>
               </div>
 
               <div className="sidebar-color">
-                <Title level={5}>Sidebar Color</Title>
+                <Title level={5}>Màu thanh bên</Title>
                 <div className="theme-color mb-2">
                   <ButtonContainer>
                     <Button
@@ -370,8 +370,8 @@ function Header({
                 </div>
 
                 <div className="sidebarnav-color mb-2">
-                  <Title level={5}>Sidenav Type</Title>
-                  <Text>Choose between 2 different sidenav types.</Text>
+                  <Title level={5}>Loại Sidenav</Title>
+                  <Text>Chọn giữa 2 loại sidenav khác nhau.</Text>
                   <ButtonContainer className="trans">
                     <Button
                       type={sidenavType === "transparent" ? "primary" : "white"}
@@ -380,7 +380,7 @@ function Header({
                         setSidenavType("transparent");
                       }}
                     >
-                      TRANSPARENT
+                      Trong suốt
                     </Button>
                     <Button
                       type={sidenavType === "white" ? "primary" : "white"}
@@ -389,20 +389,20 @@ function Header({
                         setSidenavType("white");
                       }}
                     >
-                      WHITE
+                      Trắng
                     </Button>
                   </ButtonContainer>
                 </div>
                 <div className="fixed-nav mb-2">
-                  <Title level={5}>Navbar Fixed </Title>
+                  <Title level={5}>Đã sửa thanh điều hướng</Title>
                   <Switch onChange={(e) => handleFixedNavbar(e)} />
                 </div>
                 <div className="ant-docment">
                   <ButtonContainer>
                     <Button type="black" size="large">
-                      FREE DOWNLOAD
+                      Tải miễn phí
                     </Button>
-                    <Button size="large">VIEW DOCUMENTATION</Button>
+                    <Button size="large">Xem tài liệu</Button>
                   </ButtonContainer>
                 </div>
                 <div className="viewstar">
@@ -412,7 +412,7 @@ function Header({
 
                 <div className="ant-thank">
                   <Title level={5} className="mb-2">
-                    Thank you for sharing!
+                    Cảm ơn bạn đã chia sẻ!
                   </Title>
                   <ButtonContainer className="social">
                     <Button type="black">{<TwitterOutlined />}TWEET</Button>
@@ -424,7 +424,7 @@ function Header({
           </Drawer>
           <span style={{ cursor: 'pointer' }} onClick={SignOut} className="btn-sign-in">
             {profile}
-            <span>{auth ? 'Sign out' : 'Sign in'}</span>
+            <span>{auth && 'Đăng xuất'}</span>
           </span>
           {/* <Input
             className="header-search"

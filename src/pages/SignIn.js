@@ -126,9 +126,9 @@ const SignIn = () => {
               lg={{ span: 6, offset: 2 }}
               md={{ span: 12 }}
             >
-              <Title className="mb-15">Sign In</Title>
+              <Title className="mb-15">Đăng nhập</Title>
               <Title className="font-regular text-muted" level={5}>
-                Enter your email and password to sign in
+                Nhập email và mật khẩu để đăng nhập
               </Title>
               <Form
                 form={form}
@@ -144,7 +144,7 @@ const SignIn = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your email!",
+                      message: "Nhập Email!",
                     },
                   ]}
                 >
@@ -153,16 +153,16 @@ const SignIn = () => {
 
                 <Form.Item
                   className="username"
-                  label="Password"
+                  label="Mật khẩu"
                   name="password"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your password!",
+                      message: "Nhập mật khẩu!",
                     },
                   ]}
                 >
-                  <Input type="password" placeholder="Password" />
+                  <Input type="password" placeholder="Mật khẩu" />
                 </Form.Item>
 
                 <Form.Item
@@ -171,7 +171,7 @@ const SignIn = () => {
                   valuePropName="checked"
                 >
                   <Switch defaultChecked value={true} onChange={(e) => onChange(e)} />
-                  Remember me
+                  Lưu tài khoản
                 </Form.Item>
 
                 <Form.Item>
@@ -180,7 +180,7 @@ const SignIn = () => {
                     htmlType="submit"
                     style={{ width: "100%" }}
                   >
-                    SIGN IN
+                    ĐĂNG NHẬP
                   </Button>
                 </Form.Item>
                 {/* <p className="font-semibold text-muted">
@@ -204,12 +204,12 @@ const SignIn = () => {
         </Content>
         <Footer>
           <Menu mode="horizontal">
-            <Menu.Item>Company</Menu.Item>
-            <Menu.Item>About Us</Menu.Item>
-            <Menu.Item>Teams</Menu.Item>
-            <Menu.Item>Products</Menu.Item>
+            <Menu.Item>Công ty</Menu.Item>
+            <Menu.Item>Giới thiệ</Menu.Item>
+            <Menu.Item>Đội ngũ</Menu.Item>
+            <Menu.Item>Sản phẩm</Menu.Item>
             <Menu.Item>Blogs</Menu.Item>
-            <Menu.Item>Pricing</Menu.Item>
+            <Menu.Item>Định giá</Menu.Item>
           </Menu>
           <Menu mode="horizontal" className="menu-nav-social">
             <Menu.Item>

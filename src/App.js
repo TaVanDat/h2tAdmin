@@ -23,15 +23,15 @@ function App() {
         <Route path="/sign-up" exact component={SignUp} />
         <Route path="/sign-in" exact component={SignIn} />
         <Main>
-          <Route exact path="/dashboard" component={Home} />
+          <Route exact path="/Thống kê" component={Home} />
           <Route exact path="/Sản phẩm" component={Tables} />
-          <Route exact path="/user" component={Users} />
-          <Route exact path="/category" component={Category} />
-          <Route exact path="/news" component={News} />
-          <Route exact path="/billing" component={Billing} />
+          <Route exact path="/Người dùng" component={Users} />
+          <Route exact path="/Danh mục" component={Category} />
+          <Route exact path="/Tin tức" component={News} />
+          <Route exact path="/Hóa đơn" component={Billing} />
           <Route exact path="/rtl" component={Rtl} />
           <Route exact path="/profile" component={Profile} />
-          <Redirect from="*" to="/dashboard" />
+          <Redirect from="*" to="/Thống kê" />
         </Main>
       </Switch>
     </div>

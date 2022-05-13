@@ -85,7 +85,7 @@ function News() {
 
     const columns = [
         {
-            title: "Name",
+            title: "Tên sự kiện",
             // dataIndex: "Name",
             key: "Name",
             width: 100,
@@ -103,7 +103,7 @@ function News() {
             // fixed: 'left'
         },
         {
-            title: "Content",
+            title: "Nội dung",
             dataIndex: "Content",
             key: "Content",
             width: 100,
@@ -120,7 +120,7 @@ function News() {
 
         },
         {
-            title: "Title",
+            title: "Tiêu đề",
             key: "Title",
             width: 100,
             dataIndex: "Title",
@@ -136,7 +136,7 @@ function News() {
             // }
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "Action",
             fixed: 'right',
             width: 40,
@@ -145,7 +145,7 @@ function News() {
                     <>
                         {/* <PlusSquareOutlined onClick={() => BtnAddNew(record)} style={{ color: 'green', cursor: 'pointer', marginRight: 10, fontSize: 20 }} /> */}
                         <EditOutlined onClick={() => BtnModalUpdate(record)} style={{ color: 'aqua', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
-                        <Popconfirm title="Sure to delete?" onConfirm={() => BtnDelete(record)}>
+                        <Popconfirm okText="Xóa" cancelText="Hủy" title="Chắc chắn xóa?" onConfirm={() => BtnDelete(record)}>
                             <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
                         </Popconfirm>
                     </>
@@ -258,10 +258,10 @@ function News() {
                                 <>
                                     <Button onClick={() => setAddNews(true)} type='second' style={{ display: 'flex', alignItem: 'center' }}>
                                         <PlusSquareOutlined style={{ color: 'green', cursor: 'pointer', marginTop: 4, fontSize: 30 }} />
-                                        Add New
+                                        Thêm mới
                                     </Button>
                                     <Drawer
-                                        title="Create a new News"
+                                        title="Thêm mới tin tức"
                                         width={720}
                                         bodyStyle={{ paddingBottom: 80 }}
                                         onClose={() => {
@@ -278,11 +278,11 @@ function News() {
                                         >
                                             <Form.Item
                                                 name="Name"
-                                                label="News Name"
+                                                label="Tên sự kiện"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: 'Please input Name',
+                                                        message: 'Nhập tên sự kiện',
                                                     },
                                                 ]}
                                             >
@@ -290,11 +290,11 @@ function News() {
                                             </Form.Item>
                                             <Form.Item
                                                 name="Title"
-                                                label="Title"
+                                                label="Tiêu đề"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: 'Please input Title',
+                                                        message: 'Nhập tiêu đề',
                                                     },
                                                 ]}
                                             >
@@ -322,7 +322,7 @@ function News() {
                                             >
                                                 <Button icon={<UploadOutlined />}>Thêm ảnh (Số lượng:1)</Button>
                                             </Upload><br />
-                                            <p> Content:
+                                            <p> Nội dung:
                                                 <CKEditor
                                                     editor={ClassicEditor}
                                                     data={isDataEdit.Content}
@@ -342,7 +342,7 @@ function News() {
 
                                             <Form.Item {...tailFormItemLayout}>
                                                 <Button type="primary" htmlType="submit">
-                                                    Add News
+                                                    Thêm mới
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -364,7 +364,7 @@ function News() {
                                 {/* edit news */}
 
                                 <Drawer
-                                    title="Update a new News"
+                                    title="Cập nhật tin tức"
                                     width={720}
                                     bodyStyle={{ paddingBottom: 80 }}
                                     onClose={() => {
@@ -373,7 +373,7 @@ function News() {
                                     }}
                                     visible={isEditing}
                                 >
-                                    <label> News Name:
+                                    <label> Tên sự kiện:
                                         <Input placeholder='Fill in News Name'
                                             value={isDataEdit.Name}
                                             onChange={e =>
@@ -384,7 +384,7 @@ function News() {
                                                 })
                                             } />
                                     </label><br /><br />
-                                    <label> Title:
+                                    <label> Tiêu đề:
                                         <Input placeholder='Fill in Title'
                                             value={isDataEdit.Title}
                                             onChange={e =>
@@ -417,7 +417,7 @@ function News() {
                                     >
                                         <Button icon={<UploadOutlined />}>Thêm ảnh (Số lượng:1)</Button>
                                     </Upload><br />
-                                    <p> Content:
+                                    <p> Nội dung:
                                         <CKEditor
                                             editor={ClassicEditor}
                                             data={isDataEdit.Content}

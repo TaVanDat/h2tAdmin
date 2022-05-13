@@ -32,7 +32,6 @@ function Billing() {
   const [isAddNew, setIsAddNew] = useState({})
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [categoryName, setCategoryName] = useState("")
   const fetchData = async () => {
     const response = await axios.get(`${API_URL}/bill/all`)
     if (response && response.data) {
@@ -42,9 +41,7 @@ function Billing() {
       // console.log(dataUserRef.current)
     }
   }
-  const handleChangeCategoryName = (e) => {
-    setCategoryName(e.target.value);
-  }
+
 
   useEffect(() => {
     fetchData()
@@ -52,7 +49,7 @@ function Billing() {
 
   const columns = [
     {
-      title: "Bill Code",
+      title: "Mã hóa đơn",
       dataIndex: "Code",
       key: "Code",
       width: 10,
@@ -68,7 +65,7 @@ function Billing() {
       // fixed: 'left'
     },
     {
-      title: "Account",
+      title: "Khách hàng",
       dataIndex: "Account",
       key: "Account",
       width: 30,
@@ -76,7 +73,7 @@ function Billing() {
       // fixed: 'left'
     },
     {
-      title: "Total",
+      title: "Thành tiền",
       // dataIndex: "Total",
       key: "Total",
       width: 30,
@@ -89,7 +86,7 @@ function Billing() {
       }
     },
     {
-      title: "OrderDate",
+      title: "Ngày đặt",
       key: "OrderDate",
       width: 50,
       render(record) {
@@ -101,7 +98,7 @@ function Billing() {
       }
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       key: "StatusId",
       width: 100,
       // dataIndex: "StatusId",
@@ -115,14 +112,14 @@ function Billing() {
 
     },
     {
-      title: "TransformMethod",
+      title: "Phương thức vận chuyển",
       key: "TransformMethod",
       width: 100,
       dataIndex: "TransformMethod",
 
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "Action",
       width: 100,
       render() {
@@ -145,7 +142,7 @@ function Billing() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Bill Table"
+              title="Danh sách hóa đơn"
             >
               <div className="table-responsive" >
                 {isLoading ? <Spin /> :

@@ -146,25 +146,25 @@ function Home() {
   ];
   const count = [
     {
-      today: "Total Product",
+      today: "Tổng sản phầm",
       title: dashboardRef.current?.TotalProduct,
       icon: dollor,
       bnb: "bnb2",
     },
     {
-      today: "Total Orders",
+      today: "Tổng đơn hàng",
       title: dashboardRef.current?.TotalOrder,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: "Accounts",
+      today: "Tài khoản",
       title: '+' + dashboardRef.current?.TotalAccount,
       icon: heart,
       bnb: "redtext",
     },
     {
-      today: "Revenues",
+      today: "Doanh thu",
       title: Format(dashboardRef.current?.TotalRevenues),
       icon: cart,
       bnb: "bnb2",
@@ -174,7 +174,7 @@ function Home() {
   const columns = [
 
     {
-      title: "Name",
+      title: "Tên sản phẩm",
       key: "Name",
       width: 200,
       fixed: 'left',
@@ -190,7 +190,7 @@ function Home() {
       }
     },
     {
-      title: "Description",
+      title: "Mô tả",
       key: "Description",
       dataIndex: 'Description',
       width: 400,
@@ -206,7 +206,7 @@ function Home() {
       // }
     },
     {
-      title: "Price",
+      title: "Giá ban đầu",
       key: "Price",
       width: 80,
       render(record) {
@@ -218,7 +218,7 @@ function Home() {
       }
     },
     {
-      title: "SalePrice",
+      title: "Giá bán",
       key: "SalePrice",
       width: 80,
       render(record) {
@@ -230,7 +230,7 @@ function Home() {
       }
     },
     {
-      title: "Category",
+      title: "Danh mục",
       key: "Category",
       width: 100,
       render(record) {
@@ -247,7 +247,7 @@ function Home() {
       }
     },
     {
-      title: "Quantity",
+      title: "Sô lượng",
       key: "Quantity",
       dataIndex: "Quantity",
       width: 80,
@@ -311,7 +311,7 @@ function Home() {
             <Card bordered={false} className="criclebox cardbody h-full">
               <div className="project-ant">
                 <div>
-                  <Title level={5}>New Products</Title>
+                  <Title level={5}>Sản phẩm mới</Title>
                 </div>
                 <div className="ant-filtertabs">
                   <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">

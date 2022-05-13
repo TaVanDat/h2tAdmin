@@ -58,7 +58,7 @@ function Category() {
 
     const columns = [
         {
-            title: "CategoryId",
+            title: "Mã danh mục",
             dataIndex: "Id",
             key: "Id",
             width: 10,
@@ -67,7 +67,7 @@ function Category() {
             // fixed: 'left'
         },
         {
-            title: "CategoryName",
+            title: "Tên danh mục",
             dataIndex: "Name",
             key: "Name",
             width: 30,
@@ -75,7 +75,7 @@ function Category() {
             // fixed: 'left'
         },
         {
-            title: "Code",
+            title: "Danh mục loại",
             dataIndex: "Code",
             key: "Code",
             width: 30,
@@ -88,23 +88,23 @@ function Category() {
                     text: 'Quần',
                     value: 'quan',
                 },
-                {
-                    text: 'Balo',
-                    value: 'balo',
-                },
-                {
-                    text: 'Giày',
-                    value: 'giay',
-                },
-                {
-                    text: 'Khác',
-                    value: 'khac',
-                },
+                // {
+                //     text: 'Balo',
+                //     value: 'balo',
+                // },
+                // {
+                //     text: 'Giày',
+                //     value: 'giay',
+                // },
+                // {
+                //     text: 'Khác',
+                //     value: 'khac',
+                // },
             ],
             onFilter: (value, record) => record.Code.indexOf(value) === 0,
         },
         {
-            title: "Status",
+            title: "Trạng thái",
             key: "StatusId",
             width: 50,
             // dataIndex: "StatusId",
@@ -117,7 +117,7 @@ function Category() {
             }
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "Action",
             // fixed: 'right',
             width: 40,
@@ -266,16 +266,16 @@ function Category() {
                         <Card
                             bordered={false}
                             className="criclebox tablespace mb-24"
-                            title="Category Table"
+                            title="Danh sách danh mục"
                             extra={
                                 <>
                                     <Button onClick={() => BtnAddNew()} type='second' style={{ display: 'flex', alignItem: 'center' }}>
                                         <PlusSquareOutlined style={{ color: 'green', cursor: 'pointer', marginTop: 4, fontSize: 30 }} />
-                                        Add New
+                                        Thêm mới
                                     </Button>
                                     {/* add new category */}
                                     <Modal
-                                        title='Add new Category'
+                                        title='Thêm mới danh mục'
                                         okText={"Add"}
                                         visible={isAdding}
                                         onCancel={() => {
@@ -287,19 +287,19 @@ function Category() {
                                                 <Button onClick={() => {
                                                     setIsAdding(false)
                                                     setIsAddNew({})
-                                                }}>Cancel</Button>
+                                                }}>Hủy</Button>
                                                 <Button type='primary' disabled={disabled}
                                                     onClick={() => {
                                                         AddNewCategory();
                                                         setIsAdding(false)
                                                         setIsAddNew({})
-                                                    }}>Add</Button>
+                                                    }}>Thêm</Button>
                                             </>
                                         ]}
 
                                     >
-                                        <label> Category Name:
-                                            <Input value={isAddNew.Name} autoFocus required placeholder='Fill in Category Name'
+                                        <label> Tên danh mục:
+                                            <Input value={isAddNew.Name} autoFocus required placeholder='Tên danh mục'
                                                 onChange={e => {
                                                     handleChangeCategoryName(e)
                                                     setIsAddNew(pre => {
@@ -313,7 +313,7 @@ function Category() {
                                         <Select
                                             value={isAddNew.Code}
                                             style={{ width: 160 }}
-                                            placeholder="Select to Code"
+                                            placeholder="Danh mục loại"
                                             onChange={(e) => {
                                                 setIsAddNew(pre => {
                                                     return { ...pre, Code: e ? e : 'ao' }
@@ -322,16 +322,16 @@ function Category() {
                                         >
                                             <Option value="ao">Áo</Option>
                                             <Option value="quan">Quần</Option>
-                                            <Option value="balo">Balo</Option>
-                                            <Option value="giay">Giày</Option>
-                                            <Option value="khac">Khác</Option>
+                                            {/* <Option value="balo">Balo</Option> */}
+                                            {/* <Option value="giay">Giày</Option> */}
+                                            {/* <Option value="khac">Khác</Option> */}
 
                                         </Select> &emsp;
                                         <Select
                                             defaultValue={isAddNew.StatusId}
                                             value={isAddNew.StatusId}
                                             style={{ width: 160 }}
-                                            placeholder="Select to StatusId"
+                                            placeholder="Trạng thái"
                                             onChange={(e) => {
                                                 setIsAddNew(pre => {
                                                     return { ...pre, StatusId: e }
@@ -360,8 +360,9 @@ function Category() {
 
                                 {/* edit category */}
                                 <Modal
-                                    title='Edit Category'
-                                    okText={"Save"}
+                                    title='Cập nhật danh mục'
+                                    okText={"Cập nhật"}
+                                    cancelText="Hủy"
                                     visible={isEditing}
                                     onCancel={() => {
                                         resetModal()
@@ -373,7 +374,7 @@ function Category() {
                                         // console.log(isDataEdit)
                                     }}
                                 >
-                                    <label> Category Name:
+                                    <label> Tên danh mục:
                                         <Input placeholder='Fill in Category Name'
                                             value={isDataEdit.Name}
                                             onChange={e =>
@@ -386,7 +387,7 @@ function Category() {
                                     </label><br /><br />
                                     <Select
                                         style={{ width: 160 }}
-                                        placeholder="Select to Code"
+                                        placeholder="Chọn danh mục loại"
                                         onChange={(e) => {
                                             setIsDataEdit(pre => {
                                                 return { ...pre, Code: e }
@@ -395,14 +396,14 @@ function Category() {
                                     >
                                         <Option value="ao">Áo</Option>
                                         <Option value="quan">Quần</Option>
-                                        <Option value="balo">Balo</Option>
-                                        <Option value="giay">Giày</Option>
-                                        <Option value="khac">Khác</Option>
+                                        {/* <Option value="balo">Balo</Option> */}
+                                        {/* <Option value="giay">Giày</Option> */}
+                                        {/* <Option value="khac">Khác</Option> */}
 
                                     </Select> &emsp;
                                     <Select
                                         style={{ width: 160 }}
-                                        placeholder="Select to StatusId"
+                                        placeholder="Trang thái"
                                         onChange={(e) => {
                                             setIsDataEdit(pre => {
                                                 return { ...pre, StatusId: e }

@@ -115,7 +115,7 @@ function News() {
   const columns = [
 
     {
-      title: "Name",
+      title: "Tên sản phẩm",
       key: "Name",
       width: 220,
       fixed: 'left',
@@ -135,25 +135,18 @@ function News() {
       }
     },
     {
-      title: "Description",
+      title: "Mô tả",
       key: "Description",
       dataIndex: 'Description',
       width: 400,
       ellipsis: {
         showTitle: false,
       },
-      // render(record) {
-      //   return (
-      //     <>
-      //       {record.Description.substr(0, 50)}...
-      //     </>
-      //   );
-      // }
     },
     {
-      title: "Price",
+      title: "Giá ban đầu",
       key: "Price",
-      width: 80,
+      width: 120,
       sorter: (a, b) => a.Price - b.Price,
       render(record) {
         return (
@@ -164,9 +157,9 @@ function News() {
       }
     },
     {
-      title: "SalePrice",
+      title: "Giá bán",
       key: "SalePrice",
-      width: 80,
+      width: 100,
       sorter: (a, b) => a.SalePrice - b.SalePrice,
       render(record) {
         return (
@@ -177,9 +170,9 @@ function News() {
       }
     },
     {
-      title: "Category",
+      title: "Danh mục",
       key: "Category",
-      width: 100,
+      width: 120,
       filters: [
         {
           text: 'Áo',
@@ -190,16 +183,20 @@ function News() {
           value: '5',
         },
         {
-          text: 'Balo',
+          text: 'Áo Nam',
           value: '9',
         },
         {
-          text: 'Giày',
+          text: 'Quần Nam',
           value: '10',
         },
         {
-          text: 'Khác',
+          text: 'Áo Nữ',
           value: '11',
+        },
+        {
+          text: 'Quần Nữ',
+          value: '13',
         },
       ],
       onFilter: (value, record) => record.CategoryId.indexOf(value) === 0,
@@ -218,10 +215,48 @@ function News() {
       }
     },
     {
-      title: "Quantity",
+      title: "Trạng thái",
+      key: "StatusId",
+      // dataIndex: 'StatusId',
+      width: 120,
+      filters: [
+        {
+          text: 'Còn hàng',
+          value: '6',
+        },
+        {
+          text: 'Sắp hết hàng',
+          value: '7',
+        },
+        {
+          text: 'Hết hàng',
+          value: '8',
+        },
+      ],
+      onFilter: (value, record) => {
+        if (Number(value) === 6)
+          return (record.Quantity >= 10)
+        if (Number(value) === 7)
+          return (record.Quantity <= 10 & record.Quantity > 0)
+        if (Number(value) === 8)
+          return (record.Quantity === 0)
+
+      },
+      render(record) {
+        return (
+          <>
+            {record.Quantity &&
+              record.Quantity !== 0 ? (record.Quantity > 10 ? 'Còn hàng' : (record.Quantity <= 10 & record.Quantity > 0) && 'Sắp hết hàng') : ('Hết hàng')
+            }
+          </>
+        );
+      }
+    },
+    {
+      title: "Số lượng",
       key: "Quantity",
       dataIndex: "Quantity",
-      width: 80,
+      width: 90,
       sorter: (a, b) => a.Quantity - b.Quantity,
     },
     {
@@ -238,7 +273,7 @@ function News() {
       }
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "Action",
       fixed: 'right',
       width: 100,
@@ -247,7 +282,7 @@ function News() {
           <>
             {/* <PlusSquareOutlined onClick={() => BtnAddNew(record)} style={{ color: 'green', cursor: 'pointer', marginRight: 10, fontSize: 20 }} /> */}
             <EditOutlined onClick={() => BtnModalUpdate(record)} style={{ color: 'aqua', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
-            <Popconfirm title="Sure to delete?" onConfirm={() => BtnDelete(record)}>
+            <Popconfirm cancelText="Hủy" okText='Xóa' title="Chắc chắn xóa?" onConfirm={() => BtnDelete(record)}>
               <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
             </Popconfirm>
           </>
@@ -299,9 +334,10 @@ function News() {
     await axios.put(`${API_URL}/product/update/${isDataEdit.Id}`,
       {
         ...isDataEdit,
-        Image: isDataEdit.Image?.join(','),
+        Image: isDataEdit.Image ? isDataEdit.Image?.join(',') : 'empty.png',
         SalePrice: Number(dataPro[0].SalePrice) === Number(isDataEdit.SalePrice) ? (dataPro[0].SalePrice / isDataEdit.Price) * isDataEdit.Price : isDataEdit.SalePrice * isDataEdit.Price,
-        Size: isDataEdit.Size?.join(",")
+        Size: isDataEdit.Size?.join(","),
+        Color: isDataEdit.Color?.join(",")
       },
       {
         headers: {
@@ -345,6 +381,7 @@ function News() {
       Code: randomCode,
       SalePrice: values.Price * values.SalePrice,
       Size: values.Size.join(","),
+      Color: 'Trắng',
       Image: isDataAdd.Image ? isDataAdd.Image : 'empty.png',
       Description: isDataAdd.Description
     }
@@ -385,22 +422,22 @@ function News() {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Products Table"
+              title="Danh sách sản phẩm"
               extra={
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <Input
                     className="header-search"
-                    placeholder="Type here..."
+                    placeholder="Tìm kiếm..."
                     prefix={<SearchOutlined />}
                     style={{ padding: '0 10px', borderRadius: 10, marginRight: 10 }}
                     onChange={handleSearch}
                   />
                   <Button onClick={() => setAddNews(true)} type='second' style={{ display: 'flex', alignItem: 'center' }}>
                     <PlusSquareOutlined style={{ color: 'green', cursor: 'pointer', marginTop: 4, fontSize: 30 }} />
-                    Add New
+                    Thêm mới
                   </Button>
                   <Drawer
-                    title="Create a new News"
+                    title="Thêm mơi 1 sản phẩm"
                     width={720}
                     bodyStyle={{ paddingBottom: 80 }}
                     onClose={() => {
@@ -424,11 +461,11 @@ function News() {
                               rules={[
                                 {
                                   required: true,
-                                  message: 'Please input Name',
+                                  message: 'Nhập tên sản phẩm',
                                 },
                               ]}
                             >
-                              <Input autoFocus placeholder='Fill in Product Name' />
+                              <Input autoFocus placeholder='Tên sản phẩm' />
                             </Form.Item>
                           </Card>
                         </Col>
@@ -445,11 +482,11 @@ function News() {
                                 },
                                 {
                                   required: true,
-                                  message: 'Please input Price',
+                                  message: 'Nhập giá ban đầu',
                                 },
                               ]}
                             >
-                              <InputNumber style={{ width: '100%', lineHeight: "31px", borderRadius: 5 }} placeholder='Fill in Product Price' />
+                              <InputNumber style={{ width: '100%', lineHeight: "31px", borderRadius: 5 }} placeholder='Giá ban đầu' />
                             </Form.Item>
                           </Card>
                         </Col>
@@ -459,10 +496,10 @@ function News() {
                               rules={[
                                 {
                                   required: true,
-                                  message: 'Please select SalePrice',
+                                  message: 'Nhập giá bán',
                                 },
                               ]}>
-                              <Select style={{ width: "100%", lineHeight: "31px" }} allowClear placeholder="Please select SalePrice">
+                              <Select style={{ width: "100%", lineHeight: "31px" }} allowClear placeholder="Giá bán">
                                 <Option value={1}>0%</Option>
                                 <Option value={0.25}>25%</Option>
                                 <Option value={0.30}>30%</Option>
@@ -480,10 +517,10 @@ function News() {
                               rules={[
                                 {
                                   required: true,
-                                  message: 'Please select UnitOfMeasureId',
+                                  message: 'Chọn đơn vị',
                                 },
                               ]}>
-                              <Select style={{ width: "100%", lineHeight: "31px" }} placeholder="Please select Size">
+                              <Select style={{ width: "100%", lineHeight: "31px" }} placeholder="Chọn đơn vị">
                                 <Option value={1}>Cái</Option>
                                 <Option value={2}>Chiếc</Option>
                                 <Option value={3}>Bộ</Option>
@@ -499,16 +536,17 @@ function News() {
                               rules={[
                                 {
                                   required: true,
-                                  message: 'Please select CategoryId',
+                                  message: 'Chọn danh mục',
                                 },
                               ]}
                             >
-                              <Select style={{ width: "100%", lineHeight: "31px" }} placeholder="Please select CategoryId">
+                              <Select style={{ width: "100%", lineHeight: "31px" }} placeholder="Danh mục">
                                 <Option value="1">Áo</Option>
                                 <Option value="5">Quần</Option>
-                                <Option value="9">Balo</Option>
-                                <Option value="10">Giày</Option>
-                                <Option value="11">Khác</Option>
+                                <Option value="9">Áo Nam</Option>
+                                <Option value="10">Quần Nam</Option>
+                                <Option value="11">Áo Nữ</Option>
+                                <Option value="13">Quần Nữ</Option>
                               </Select>
                             </Form.Item>
                           </Card>
@@ -522,11 +560,11 @@ function News() {
                               rules={[
                                 {
                                   required: true,
-                                  message: 'Please select BuyerStoreId',
+                                  message: 'Chọn nhà cung cấp',
                                 },
                               ]}
                             >
-                              <Select style={{ width: "100%", lineHeight: "31px" }} placeholder="Please select BuyerStoreId">
+                              <Select style={{ width: "100%", lineHeight: "31px" }} placeholder="Nhà cung cấp">
                                 <Option value="1">CÔNG TY CỔ PHẦN THỜI TRANG H2T VIỆT NAM</Option>
                               </Select>
                             </Form.Item>
@@ -543,11 +581,11 @@ function News() {
                                 },
                                 {
                                   required: true,
-                                  message: 'Please input Quantity',
+                                  message: 'Nhập số lượng',
                                 },
                               ]}
                             >
-                              <InputNumber style={{ width: '100%', lineHeight: "40px", borderRadius: 5 }} placeholder='Fill in Product Quantity' />
+                              <InputNumber style={{ width: '100%', lineHeight: "40px", borderRadius: 5 }} placeholder='Số lượng' />
                             </Form.Item>
                           </Card>
                         </Col>
@@ -560,7 +598,7 @@ function News() {
                               rules={[
                                 {
                                   required: true,
-                                  message: 'Please select Size',
+                                  message: 'Chọn size',
                                 },
                               ]}
                             >
@@ -568,7 +606,7 @@ function News() {
                                 style={{ width: '100%', lineHeight: "31px", borderRadius: '20px' }}
                                 mode="multiple"
                                 allowClear
-                                placeholder="Please select Size"
+                                placeholder="Size"
                               >
                                 <Option value="S">S</Option>
                                 <Option value="M">M</Option>
@@ -601,14 +639,14 @@ function News() {
                               }}
                             // customRequest={{ status: 'done' }}
                             >
-                              <Button icon={<UploadOutlined />}>Upload (Max:1)</Button>
+                              <Button icon={<UploadOutlined />}>Thêm ảnh (Max:1)</Button>
                             </Upload>
                             {/* <Button type='primary'>Upload</Button> */}
                           </Card>
                         </Col>
                       </Row>
 
-                      <p> Description:
+                      <p> Mô tả:
                         <CKEditor
                           editor={ClassicEditor}
                           data={isDataEdit.Description}
@@ -627,7 +665,7 @@ function News() {
                       </p><br /> <br />
                       <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit">
-                          Add News
+                          Thêm mới
                         </Button>
                       </Form.Item>
                     </Form>
@@ -650,7 +688,7 @@ function News() {
                 {/* edit news */}
 
                 <Drawer
-                  title="Update a new News"
+                  title="Cập nhập sản phẩm"
                   width={720}
                   bodyStyle={{ paddingBottom: 80 }}
                   onClose={() => {
@@ -664,7 +702,7 @@ function News() {
                     <Col xs={24} sm={24} md={12} lg={12} xl={24} className="mb-24">
                       <Card bordered={false} className="criclebox h-full">
 
-                        <Input autoFocus placeholder='Fill in Product Name'
+                        <Input autoFocus placeholder='Tên sản phẩm'
                           value={isDataEdit.Name}
                           onChange={e =>
                             setIsDataEdit(pre => {
@@ -681,7 +719,7 @@ function News() {
                     <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
                       <Card bordered={false} className="criclebox h-full">
                         <InputNumber style={{ width: '100%', lineHeight: "31px", borderRadius: 5 }}
-                          placeholder='Fill in Product Price'
+                          placeholder='Nhập giá ban đầu'
                           min={0}
                           value={isDataEdit.Price}
                           onChange={e =>
@@ -757,11 +795,17 @@ function News() {
                             })
                           }
                         >
-                          <Option value="1">Áo</Option>
-                          <Option value="5">Quần</Option>
-                          <Option value="9">Balo</Option>
-                          <Option value="10">Giày</Option>
-                          <Option value="11">Khác</Option>
+                          <Option value="1">Áo Thun</Option>
+                          <Option value="2">Áo Polo</Option>
+                          <Option value="3">Áo Sơ Mi</Option>
+                          <Option value="5">Quần Short</Option>
+                          <Option value="6">Quần Jeans</Option>
+                          <Option value="7">Quần Jogger</Option>
+                          <Option value="8">Quần Kaki</Option>
+                          <Option value="9">Áo Nam</Option>
+                          <Option value="10">Quần Nam</Option>
+                          <Option value="11">Áo Nữ</Option>
+                          <Option value="13">Quần Nữ</Option>
                         </Select>
                       </Card>
                     </Col>
@@ -771,7 +815,7 @@ function News() {
                       <Card bordered={false} className="criclebox h-full">
 
                         <Select style={{ width: "100%", lineHeight: "31px" }}
-                          placeholder="Please select BuyerStoreId"
+                          placeholder="Chọn nhà cung cấp"
                           value={isDataEdit.BuyerStoreId}
                           onChange={e =>
                             setIsDataEdit(pre => {
@@ -789,7 +833,7 @@ function News() {
                       <Card bordered={false} className="criclebox h-full">
 
                         <InputNumber style={{ width: '100%', lineHeight: "40px", borderRadius: 5 }}
-                          placeholder='Fill in Product Quantity'
+                          placeholder='Nhập số lượng'
                           min={0} max={200}
                           value={isDataEdit.Quantity}
                           onChange={e =>
@@ -806,6 +850,26 @@ function News() {
                   <Row gutter={[24, 0]}>
                     <Col xs={24} sm={24} md={12} lg={12} xl={12} className="mb-24">
                       <Card bordered={false} className="criclebox h-full">
+                        <Select
+                          style={{ width: '100%', lineHeight: "31px", borderRadius: '20px' }}
+                          mode="multiple"
+                          allowClear
+                          placeholder={isDataEdit.Color?.join(',')}
+                          // value={isDataEdit.Size?.join(",")}
+                          onChange={e =>
+                            setIsDataEdit(pre => {
+                              return {
+                                ...pre, Color: e
+                              }
+                            })
+                          }
+                        >
+                          <Option value="Trắng">Trắng</Option>
+                          <Option value="Ghi">Ghi</Option>
+                          <Option value="Xanh">Xanh</Option>
+                          <Option value="Đỏ">Đỏ</Option>
+                          <Option value="Vàng">Vàng</Option>
+                        </Select><br /><br />
                         <Select
                           style={{ width: '100%', lineHeight: "31px", borderRadius: '20px' }}
                           mode="multiple"
@@ -854,14 +918,14 @@ function News() {
                           }}
                         // customRequest={{ status: 'done' }}
                         >
-                          <Button icon={<UploadOutlined />}>Upload (Max&lt;=5)</Button>
+                          <Button icon={<UploadOutlined />}>Thêm ảnh (Max&lt;=5)</Button>
                         </Upload>
                         {/* <Button type='primary'>Upload</Button> */}
                       </Card>
                     </Col>
                   </Row>
                   {/* <Input.TextArea showCount rows={20} /> */}
-                  <p> Description:
+                  <p> Mô tả:
                     <CKEditor
                       editor={ClassicEditor}
                       data={isDataEdit.Description}
@@ -879,7 +943,7 @@ function News() {
 
                   </p><br /> <br />
                   <div style={{ textAlign: 'center' }}>
-                    <Button type='primary' onClick={UpdateUser}>Save</Button>
+                    <Button type='primary' onClick={UpdateUser}>Cập nhật</Button>
                   </div>
                 </Drawer>
 

@@ -99,21 +99,23 @@ function Sidenav({ color }) {
     <>
       <div className="brand">
         <img src={logo} alt="" />
-        <span>Admin: {UserName}</span>
+        {role === 0 ?
+          <span>Admin: {UserName}</span> : <span>Nhân viên: {UserName}</span>
+        }
       </div>
       <hr />
       <Menu theme="light" mode="inline">
         <Menu.Item key="1">
-          <NavLink to="/dashboard">
+          <NavLink to="/Thống kê">
             <span
               className="icon"
               style={{
-                background: page === "dashboard" ? color : "",
+                background: page === "Thống kê" ? color : "",
               }}
             >
               {dashboard}
             </span>
-            <span className="label">Dashboard</span>
+            <span className="label">Thống kê</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
@@ -126,65 +128,65 @@ function Sidenav({ color }) {
             >
               <SkinOutlined />
             </span>
-            <span className="label">Manager Products</span>
+            <span className="label">Quản lý sản phẩm</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="3">
-          <NavLink to="/billing">
+          <NavLink to="/Hóa đơn">
             <span
               className="icon"
               style={{
-                background: page === "billing" ? color : "",
+                background: page === "Hóa đơn" ? color : "",
               }}
             >
               {billing}
             </span>
-            <span className="label">Billing</span>
+            <span className="label">Hóa đơn</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="4">
-          <NavLink to="/category">
+          <NavLink to="/Danh mục">
             <span
               className="icon"
               style={{
-                background: page === "category" ? color : "",
+                background: page === "Danh mục" ? color : "",
               }}
             >
               <BranchesOutlined />
             </span>
-            <span className="label">Manager Category</span>
+            <span className="label">Quản lý danh mục</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="7">
-          <NavLink to="/news">
+          <NavLink to="/Tin tức">
             <span
               className="icon"
               style={{
-                background: page === "news" ? color : "",
+                background: page === "Tin tức" ? color : "",
               }}
             >
               <BookOutlined />
             </span>
-            <span className="label">Manager News</span>
+            <span className="label">Quản lý tin tức</span>
           </NavLink>
         </Menu.Item>
         {role === 0 &&
           <Menu.Item key="8">
-            <NavLink to="/user">
+            <NavLink to="/Người dùng">
               <span
                 className="icon"
                 style={{
-                  background: page === "user" ? color : "",
+                  background: page === "Người dùng" ? color : "",
                 }}
               >
                 <SolutionOutlined />
               </span>
-              <span className="label">Manager Users</span>
+              <span className="label">Quản lý người dùng</span>
             </NavLink>
           </Menu.Item>
         }
         <Menu.Item className="menu-item-header" key="9">
-          Account Pages
+          Trang tài khoản
         </Menu.Item>
         {/* <Menu.Item key="10">
           <NavLink to="/profile">
@@ -202,7 +204,7 @@ function Sidenav({ color }) {
         <Menu.Item key="11">
           <NavLink to="/sign-in" onClick={SignOut}>
             <span className="icon"><SplitCellsOutlined /></span>
-            <span className="label">Sign Out</span>
+            <span className="label">Đăng xuất</span>
           </NavLink>
         </Menu.Item>
       </Menu>

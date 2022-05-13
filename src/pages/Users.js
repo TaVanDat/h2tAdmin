@@ -60,26 +60,26 @@ function Users() {
     }, [success, isLoading])
     const columns = [
         {
-            title: "AUTHOR",
+            title: "Tên khách hàng",
             dataIndex: "Name",
             key: "Name",
             width: 150,
             fixed: 'left'
         },
         {
-            title: "USERNAME",
+            title: "Tên sử dụng",
             dataIndex: "UserName",
             key: "UserName",
             width: 100,
         },
         {
-            title: "EMAIL",
+            title: "Email",
             dataIndex: "Email",
             key: "Email",
             width: 160,
         },
         {
-            title: "ADDRESS",
+            title: "Địa chỉ",
             key: "Address",
             dataIndex: "Address",
             width: 300,
@@ -88,13 +88,13 @@ function Users() {
             },
         },
         {
-            title: "PHONE",
+            title: "Số điện thoại",
             key: "Phone",
             dataIndex: "Phone",
             width: 100,
         },
         {
-            title: "STATUS",
+            title: "Trạng thái",
             key: "StatusId",
             width: 130,
             // dataIndex: "StatusId",
@@ -107,7 +107,7 @@ function Users() {
             }
         },
         {
-            title: "ROLE",
+            title: "Quyền",
             key: "Role",
             width: 150,
             // dataIndex: "StatusId",
@@ -120,7 +120,7 @@ function Users() {
             }
         },
         {
-            title: "Action",
+            title: "Hành động",
             key: "Action",
             fixed: 'right',
             width: 70,
@@ -194,8 +194,9 @@ function Users() {
                                     />
                                 }
                                 <Modal
-                                    title='Edit Status and Role'
-                                    okText={"Save"}
+                                    title='Sửa trạng thái và phân quyền'
+                                    okText={"Lưu"}
+                                    cancelText='Hủy'
                                     visible={isEditing}
                                     onCancel={() => {
                                         resetModal()
@@ -209,7 +210,7 @@ function Users() {
                                 >
                                     <Select
                                         style={{ width: 160 }}
-                                        placeholder="Select to Status"
+                                        placeholder="Trạng thái"
                                         onChange={(e) => {
                                             setIsDataEdit(pre => {
                                                 return { ...pre, StatusId: e }
@@ -222,7 +223,7 @@ function Users() {
                                     </Select> &emsp;
                                     <Select
                                         style={{ width: 160 }}
-                                        placeholder="Select to Role"
+                                        placeholder="Quyền"
                                         onChange={(e) => {
                                             setIsDataEdit(pre => {
                                                 return { ...pre, Role: e }
