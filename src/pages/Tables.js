@@ -437,7 +437,7 @@ function News() {
                     Thêm mới
                   </Button>
                   <Drawer
-                    title="Thêm mơi 1 sản phẩm"
+                    title="Thêm mới 1 sản phẩm"
                     width={720}
                     bodyStyle={{ paddingBottom: 80 }}
                     onClose={() => {
