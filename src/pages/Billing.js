@@ -159,7 +159,6 @@ function Billing() {
           <div>
             <FileTextOutlined onClick={() => {
               handleDetailBill(record)
-              // console.log(record.Id)
             }}
               style={{ color: 'aqua', cursor: 'pointer', fontSize: 20, marginRight: 10 }} />
           </div>
@@ -212,7 +211,6 @@ function Billing() {
   ];
   const handleDetailBill = async (record) => {
     setIsEditing(true);
-    console.log(record.Id)
     await axios.get(`${API_URL}/bill/${record.Id}`)
       .then(res => {
         setIsDataEdit(res.data.data.data)

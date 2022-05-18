@@ -7,7 +7,7 @@ import {
   Col,
   Row,
   Typography,
-  Table, Spin
+  Table, Spin, Select
 } from "antd";
 // import {
 //   ToTopOutlined
@@ -21,7 +21,7 @@ import axios from 'axios'
 
 import { API_URL } from '../api/API_URL'
 import { Authentication } from "../services/authentication";
-
+const { Option } = Select;
 const url = 'https://res.cloudinary.com/dbfjceflf/image/upload/v1651304838/h2tstore/'
 function Home() {
   // const history = useHistory()
@@ -36,10 +36,11 @@ function Home() {
   const [category, setCategory, categoryRef] = useStateRef([])
   const [dashboard, setDashboard, dashboardRef] = useStateRef([])
   const [isLoading, setIsLoading] = useState(true)
+  const [monthOrder, setMonth] = useState(new Date().getMonth() + 1)
 
 
   const fetchData = async () => {
-    const dash = await axios.get(`${API_URL}/dashboard/all`)
+    const dash = await axios.get(`${API_URL}/dashboard/all/${monthOrder}`)
     const response = await axios.get(`${API_URL}/product/latest`)
     const res = await axios.get(`${API_URL}/category/all`)
     if (dash && dash.data) {
@@ -57,7 +58,7 @@ function Home() {
   }
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [monthOrder])
   const dollor = [
     <svg
       width="22"
@@ -272,8 +273,26 @@ function Home() {
     <>
       <div className="layout-content">
         {/* thong ke */}
+        &emsp;Doanh thu tháng: <Select defaultValue={new Date().getMonth() + 1} style={{ width: 80, marginLeft: 10 }}
+          onChange={(e) => {
+            setMonth(e)
+          }}>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+          <Option value={3}>3</Option>
+          <Option value={4}>4</Option>
+          <Option value={5}>5</Option>
+          <Option value={6}>6</Option>
+          <Option value={7}>7</Option>
+          <Option value={8}>8</Option>
+          <Option value={9}>9</Option>
+          <Option value={10}>10</Option>
+          <Option value={11}>11</Option>
+          <Option value={12}>12</Option>
+        </Select><br />
         {isLoading ? <Spin /> :
           <Row className="rowgap-vbox" gutter={[24, 0]}>
+
             {count.map((c, index) => (
               <Col
                 key={index}
@@ -288,6 +307,7 @@ function Home() {
                 <Card bordered={false} className="criclebox ">
                   <div className="number">
                     <Row align="middle" gutter={[24, 0]}>
+
                       <Col xs={24}>
                         <span>{c.today}</span>
                         <Title level={3}>

@@ -232,7 +232,7 @@ function Users() {
                                     >
                                         <Option value="0">Quản trị viên</Option>
                                         <Option value="1">Khách hàng</Option>
-                                        <Option value="2">Nhân viên</Option>
+                                        {/* <Option value="2">Nhân viên</Option> */}
 
                                     </Select>
                                 </Modal>
